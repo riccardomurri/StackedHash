@@ -2,8 +2,8 @@ package Data::StackedHash;
 our $VERSION = '0.99';
 
 #
-# Copyright (C) 2003 Riccardo Murri, <riccardomurri@yahoo.it>. All
-# rights reserved.
+# Copyright (C) 2003-2011 Riccardo Murri, <riccardo.murri@gmail.com>. 
+# All rights reserved.
 
 # This package is free software and is provided "as is" without express
 # or implied warranty.  It may be used, redistributed and/or modified
