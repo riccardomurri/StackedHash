@@ -72,19 +72,18 @@ use strict;
 use warnings;
 
 sub TIEHASH {
-    my $proto = shift;
+    my $class = shift;
     my $initial = shift;
-    my $class = ref($proto) || $proto;
     my $self = {};
     $self->{KEYS} = {};
     if ($initial) {
-	$self->{STACK} = [$initial];
-	my $key;
-	foreach $key (keys %$initial) {
-	    $self->{KEYS}->{$key}++;
-	}
+        $self->{STACK} = [$initial];
+        my $key;
+        foreach $key (keys %$initial) {
+            $self->{KEYS}->{$key}++;
+        }
     } else {
-	$self->{STACK} = [{}];
+        $self->{STACK} = [{}];
     }
     bless($self, $class);
     return $self;
@@ -106,9 +105,9 @@ sub CLEAR {
     my $hash;
     my $key;
     foreach $hash (@{$self->{STACK}}) {
-	foreach $key (keys %{$hash}) {
-	    $self->{KEYS}->{$key} = 1;
-	};
+        foreach $key (keys %{$hash}) {
+            $self->{KEYS}->{$key} = 1;
+        };
     };
 };
 
@@ -138,10 +137,10 @@ sub push {
     my $self = shift;
     unshift @{$self->{STACK}}, $_[0] || {};
     if ($_[0]) {
-	my $key;
-	foreach $key (keys %{$_[0]}) {
-	    $self->{KEYS}->{$key}++;
-	};
+        my $key;
+        foreach $key (keys %{$_[0]}) {
+            $self->{KEYS}->{$key}++;
+        };
     };
 };
 
@@ -160,7 +159,7 @@ sub pop {
     my $hash = shift @{$self->{STACK}};
     my $key;
     foreach $key (keys %$hash) {
-	$self->{KEYS}->{$key}--;
+        $self->{KEYS}->{$key}--;
     }
     return $hash;
 };
@@ -214,11 +213,11 @@ sub DELETE {
     delete $self->{KEYS}->{$key} if $self->{KEYS}->{$key} == 0;
     my $hash;
     foreach $hash (@{$self->{STACK}}) {
-	next unless exists $hash->{$key};
-	# From perltie(3): ``If you want to emulate the
-	#       normal behavior of delete(), you should return what-
-	#       ever FETCH would have returned for this key.''
-	return delete $hash->{$key};
+        next unless exists $hash->{$key};
+        # From perltie(3): ``If you want to emulate the
+        #       normal behavior of delete(), you should return what-
+        #       ever FETCH would have returned for this key.''
+        return delete $hash->{$key};
     }
     return undef;
 };
@@ -229,8 +228,8 @@ sub delete_all {
     my $hash;
     my @value = ();
     foreach $hash (@{$self->{STACK}}) {
-	CORE::push @value, $hash->{$key} if exists $hash->{$key};
-	  delete $hash->{$key};
+        CORE::push @value, $hash->{$key} if exists $hash->{$key};
+          delete $hash->{$key};
       }
     delete $self->{KEYS}->{$key};
     # From perltie(3): ``If you want to emulate the
@@ -253,7 +252,7 @@ sub FETCH {
     my $key = shift;
     my $hash;
     foreach $hash (@{$self->{STACK}}) {
-	return $hash->{$key} if exists $hash->{$key};
+        return $hash->{$key} if exists $hash->{$key};
     };
     # PERL hashes return the "undefined empty string" if
     # one requests a non-existing key...
@@ -266,7 +265,7 @@ sub fetch_all {
     my $hash;
     my @values;
     foreach $hash (@{$self->{STACK}}) {
-	CORE::push @values, $hash->{$key} if exists $hash->{$key};
+        CORE::push @values, $hash->{$key} if exists $hash->{$key};
       };
     return @values;
 };
@@ -304,8 +303,8 @@ sub FIRSTKEY {
 };
 
 sub NEXTKEY {
-	my $self = shift;
-	return each %{$self->{KEYS}};
+        my $self = shift;
+        return each %{$self->{KEYS}};
 }
 
 =pod
@@ -325,8 +324,8 @@ The I<height> method returns the current height of the stack of hashes.
 =cut
 
 sub height {
-	my $self = shift;
-	return $#{$self->{STACK}};
+        my $self = shift;
+        return $#{$self->{STACK}};
 }
 
 =pod
@@ -347,9 +346,9 @@ that key is associated to a value.
 =cut
 
 sub count {
-	my $self = shift;
-	my $key = shift;
-	return $self->{KEYS}->{$key};
+        my $self = shift;
+        my $key = shift;
+        return $self->{KEYS}->{$key};
 }
 
 1; # so the require or use succeeds
